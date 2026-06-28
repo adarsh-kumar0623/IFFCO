@@ -234,7 +234,27 @@ if (employeeCanvas) {
 
 const forecastCanvas = document.getElementById("forecastChart");
 
-if (forecastCanvas && typeof predicted_demand !== "undefined") {
+if (forecastCanvas) {
+
+    let labels = [];
+
+    let values = [];
+
+    if (historyLabels.length > 0) {
+
+        labels = [...historyLabels];
+
+        values = [...historyValues];
+
+    }
+
+    if (predicted_demand > 0) {
+
+        labels.push("Prediction");
+
+        values.push(predicted_demand);
+
+    }
 
     new Chart(forecastCanvas, {
 
@@ -242,43 +262,41 @@ if (forecastCanvas && typeof predicted_demand !== "undefined") {
 
         data: {
 
-            labels: [
-
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Forecast"
-
-            ],
+            labels: labels,
 
             datasets: [
 
                 {
 
-                    label: "Demand Forecast",
+                    label: "Historical + Predicted Demand",
 
-                    data: [
-
-                        120,
-                        180,
-                        220,
-                        260,
-                        300,
-                        predicted_demand
-
-                    ],
+                    data: values,
 
                     borderColor: "#16A34A",
 
-                    backgroundColor: "rgba(22,163,74,.15)",
+                    backgroundColor: "rgba(22,163,74,0.12)",
+
+                    borderWidth: 4,
+
+                    pointRadius: 6,
+
+                    pointHoverRadius: 8,
+
+                    pointBackgroundColor: [
+
+                        ...new Array(values.length - 1).fill("#16A34A"),
+
+                        "#DC2626"
+
+                    ],
+
+                    pointBorderColor: "#ffffff",
+
+                    pointBorderWidth: 2,
 
                     fill: true,
 
-                    tension: .4,
-
-                    borderWidth: 3
+                    tension: 0.35
 
                 }
 
@@ -292,11 +310,35 @@ if (forecastCanvas && typeof predicted_demand !== "undefined") {
 
             maintainAspectRatio: false,
 
+            interaction: {
+
+                intersect: false,
+
+                mode: "index"
+
+            },
+
             plugins: {
 
                 legend: {
 
-                    display: false
+                    display: true,
+
+                    position: "top"
+
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            return " Demand : " + context.parsed.y + " Bags";
+
+                        }
+
+                    }
 
                 }
 
@@ -306,7 +348,27 @@ if (forecastCanvas && typeof predicted_demand !== "undefined") {
 
                 y: {
 
-                    beginAtZero: true
+                    beginAtZero: true,
+
+                    title: {
+
+                        display: true,
+
+                        text: "Demand (Bags)"
+
+                    }
+
+                },
+
+                x: {
+
+                    title: {
+
+                        display: true,
+
+                        text: "Months"
+
+                    }
 
                 }
 
