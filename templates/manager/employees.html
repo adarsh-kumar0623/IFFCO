@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Management{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="row">
+
+        <div class="col-lg-2 p-0">
+            {% include "components/sidebar.html" %}
+        </div>
+
+        <div class="col-lg-10">
+
+            <!-- Header -->
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold text-success mb-1">
+                        Employee Management
+                    </h2>
+
+                    <small class="text-muted">
+                        Total Employees : {{ total }}
+                    </small>
+
+                </div>
+
+                <button
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addEmployeeModal">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+
+                    Add Employee
+
+                </button>
+
+            </div>
+
+            <!-- Flash -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category,message in messages %}
+
+            <div class="alert alert-{{ category }}">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Table -->
+
+            <div class="dashboard-card">
+
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+
+                        <input
+                            id="searchInput"
+                            class="form-control"
+                            placeholder="Search Employee...">
+
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-success">
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Designation</th>
+                                <th>Status</th>
+                                <th width="170">Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {% for employee in employees %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ employee.employee_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ employee.name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ employee.email }}
+
+                            </td>
+
+                            <td>
+
+                                {{ employee.designation }}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-success">
+
+                                    Active
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+
+                                    class="btn btn-sm btn-primary edit-btn"
+
+                                    data-id="{{ employee.employee_id }}"
+                                    data-name="{{ employee.name }}"
+                                    data-email="{{ employee.email }}"
+                                    data-designation="{{ employee.designation }}"
+
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editEmployeeModal">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                </button>
+
+                                <a
+
+                                    href="/manager/delete-employee/{{ employee.employee_id }}"
+
+                                    class="btn btn-sm btn-danger delete-btn">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ADD EMPLOYEE MODAL ================= -->
+
+<div
+class="modal fade"
+id="addEmployeeModal"
+tabindex="-1">
+
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<form method="POST">
+
+<div class="modal-header">
+
+<h4>Add Employee</h4>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Employee ID</label>
+
+<input
+name="employee_id"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Name</label>
+
+<input
+name="name"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Email</label>
+
+<input
+type="email"
+name="email"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-12">
+
+<label>Designation</label>
+
+<select
+name="designation"
+class="form-select">
+
+<option>Sales Executive</option>
+
+<option>Senior Sales Executive</option>
+
+<option>Area Sales Officer</option>
+
+<option>Territory Sales Officer</option>
+
+<option>Regional Sales Manager</option>
+
+<option>Agriculture Development Officer</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-secondary"
+type="button"
+data-bs-dismiss="modal">
+
+Cancel
+
+</button>
+
+<button
+class="btn btn-success"
+type="submit">
+
+Save Employee
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= EDIT EMPLOYEE MODAL ================= -->
+
+<div
+class="modal fade"
+id="editEmployeeModal"
+tabindex="-1">
+
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<form
+id="editEmployeeForm"
+method="POST">
+
+<div class="modal-header">
+
+<h4>Edit Employee</h4>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Name</label>
+
+<input
+id="editName"
+name="name"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Email</label>
+
+<input
+id="editEmail"
+type="email"
+name="email"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-12">
+
+<label>Designation</label>
+
+<select
+id="editDesignation"
+name="designation"
+class="form-select">
+
+<option>Sales Executive</option>
+
+<option>Senior Sales Executive</option>
+
+<option>Area Sales Officer</option>
+
+<option>Territory Sales Officer</option>
+
+<option>Regional Sales Manager</option>
+
+<option>Agriculture Development Officer</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-secondary"
+type="button"
+data-bs-dismiss="modal">
+
+Cancel
+
+</button>
+
+<button
+class="btn btn-success"
+type="submit">
+
+Update Employee
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

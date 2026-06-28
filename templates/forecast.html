@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}Demand Forecast{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="row">
+
+        <div class="col-lg-2 p-0">
+
+            {% include "components/sidebar.html" %}
+
+        </div>
+
+        <div class="col-lg-10">
+
+            <!-- Header -->
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold text-success">
+
+                        Fertilizer Demand Forecast
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Machine Learning Based Prediction
+
+                    </small>
+
+                </div>
+
+                <span class="badge bg-success px-3 py-2">
+
+                    AI Prediction
+
+                </span>
+
+            </div>
+
+            <!-- Prediction Form -->
+
+            <div class="dashboard-card mb-4">
+
+                <form action="/forecast/predict" method="GET">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                State
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="state"
+                                required>
+
+                                <option value="">
+
+                                    Select State
+
+                                </option>
+
+                                {% for state in states %}
+
+                                <option value="{{ state.id }}">
+
+                                    {{ state.state_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Fertilizer
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="fertilizer"
+                                required>
+
+                                <option value="">
+
+                                    Select Fertilizer
+
+                                </option>
+
+                                {% for fertilizer in fertilizers %}
+
+                                <option value="{{ fertilizer.id }}">
+
+                                    {{ fertilizer.fertilizer_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success px-4">
+
+                        <i class="bi bi-graph-up-arrow me-2"></i>
+
+                        Predict Demand
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- Prediction Cards -->
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-box-seam fs-1 text-success"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Predicted Demand
+
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+
+                            {{ predicted_demand }}
+
+                        </h2>
+
+                        <small class="text-muted">
+
+                            Bags
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-calendar-event fs-1 text-primary"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Forecast Month
+
+                        </h6>
+
+                        <h2 class="fw-bold">
+
+                            {{ next_month }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+                                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-check-circle-fill fs-1 text-warning"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Confidence
+
+                        </h6>
+
+                        <h2 class="fw-bold">
+
+                            {{ confidence }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        {% if demand=="High" %}
+
+                            <i class="bi bi-graph-up-arrow fs-1 text-danger"></i>
+
+                            <h2 class="fw-bold text-danger">
+
+                                High
+
+                            </h2>
+
+                        {% elif demand=="Medium" %}
+
+                            <i class="bi bi-bar-chart-fill fs-1 text-warning"></i>
+
+                            <h2 class="fw-bold text-warning">
+
+                                Medium
+
+                            </h2>
+
+                        {% elif demand=="Low" %}
+
+                            <i class="bi bi-graph-down-arrow fs-1 text-success"></i>
+
+                            <h2 class="fw-bold text-success">
+
+                                Low
+
+                            </h2>
+
+                        {% else %}
+
+                            <i class="bi bi-question-circle fs-1 text-secondary"></i>
+
+                            <h2 class="fw-bold text-secondary">
+
+                                --
+
+                            </h2>
+
+                        {% endif %}
+
+                        <small class="text-muted">
+
+                            Demand Level
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- AI Recommendation -->
+
+            <div class="dashboard-card mb-4">
+
+                <h4 class="mb-3">
+
+                    AI Recommendation
+
+                </h4>
+
+                <div class="alert alert-success mb-0">
+
+                    <i class="bi bi-robot me-2"></i>
+
+                    {{ recommendation }}
+
+                </div>
+
+            </div>
+
+            <!-- Forecast Chart -->
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h4 class="mb-0">
+
+                        Forecast Trend
+
+                    </h4>
+
+                    <span class="badge bg-success">
+
+                        Linear Regression
+
+                    </span>
+
+                </div>
+
+                <canvas
+                    id="forecastChart"
+                    height="110">
+
+                </canvas>
+                
+                <script>
+                const predicted_demand = {{ predicted_demand|default(0)|int }};
+                </script>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

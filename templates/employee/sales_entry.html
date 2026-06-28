@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Sales Entry{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="row">
+
+        <div class="col-lg-2 p-0">
+            {% include "components/sidebar.html" %}
+        </div>
+
+        <div class="col-lg-10">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold text-success">
+
+                        New Sales Entry
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Enter Fertilizer Sales Details
+
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+
+                {% for category,message in messages %}
+
+                    <div class="alert alert-{{category}}">
+
+                        {{message}}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+            {% endwith %}
+
+            <div class="dashboard-card">
+
+                <form method="POST">
+
+                    <div class="row">
+
+                        <!-- STATE -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                State
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="state"
+                                name="state"
+                                required>
+
+                                <option selected disabled>
+
+                                    Select State
+
+                                </option>
+
+                                {% for state in states %}
+
+                                <option value="{{ state.id }}">
+
+                                    {{ state.state_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <!-- DISTRICT -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                District
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="district"
+                                name="district"
+                                required>
+
+                                <option selected disabled>
+
+                                    Select District
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- FERTILIZER -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Fertilizer
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="fertilizer"
+                                name="fertilizer"
+                                required>
+
+                                <option selected disabled>
+
+                                    Select Fertilizer
+
+                                </option>
+
+                                {% for fertilizer in fertilizers %}
+
+                                <option
+                                    value="{{ fertilizer.id }}"
+                                    data-price="{{ fertilizer.price_per_bag }}">
+
+                                    {{ fertilizer.fertilizer_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <!-- PRICE -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Price Per Bag
+
+                            </label>
+
+                            <input
+                                id="price"
+                                class="form-control"
+                                readonly>
+
+                        </div>
+
+                        <!-- QUANTITY -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Quantity
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                class="form-control"
+                                min="1"
+                                required>
+
+                        </div>
+
+                        <!-- TOTAL -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Total Amount
+
+                            </label>
+
+                            <input
+                                id="totalAmount"
+                                class="form-control"
+                                readonly>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-3">
+
+                        <button
+                            type="submit"
+                            class="btn btn-success px-5">
+
+                            <i class="bi bi-check-circle me-2"></i>
+
+                            Save Sales Entry
+
+                        </button>
+
+                        <a
+                            href="/employee/history"
+                            class="btn btn-outline-secondary ms-2">
+
+                            View History
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

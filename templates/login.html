@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="login-page">
+
+    <!-- Animated Background -->
+
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-xl-10 col-lg-11">
+
+                <div class="login-card">
+
+                    <div class="row g-0">
+
+                        <!-- LEFT PANEL -->
+
+                        <div class="col-lg-6 login-left">
+
+                            <div class="login-content">
+
+                                <img
+                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                    class="login-logo"
+                                    alt="IFFCO">
+
+                                <div class="ai-badge">
+
+                                    <i class="bi bi-cpu-fill me-2"></i>
+
+                                    AI Powered Dashboard
+
+                                </div>
+
+                                <h1>
+
+                                    IFFCO
+
+                                    <br>
+
+                                    Fertilizer Demand
+
+                                    <br>
+
+                                    Forecasting System
+
+                                </h1>
+
+                                <div class="title-line"></div>
+
+                                <p>
+
+                                    Smart Agriculture Analytics Platform
+                                    for Sales Monitoring, Employee
+                                    Management and AI Based
+                                    Fertilizer Demand Prediction.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT PANEL -->
+
+                        <div class="col-lg-6 login-right">
+
+                            <div class="login-box">
+
+                                <h2>
+
+                                    Welcome Back
+
+                                </h2>
+
+                                <span>
+
+                                    Login to Continue
+
+                                </span>
+
+                                {% with messages=get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+
+                                {% for category,message in messages %}
+
+                                <div class="alert alert-{{category}} mt-3">
+
+                                    {{message}}
+
+                                </div>
+
+                                {% endfor %}
+
+                                {% endif %}
+                                {% endwith %}
+
+                                <form
+                                    method="POST"
+                                    class="mt-4">
+
+                                    <label>
+
+                                        Employee ID
+
+                                    </label>
+
+                                    <div class="input-group mb-4">
+
+                                        <span class="input-group-text">
+
+                                            <i class="bi bi-person-fill"></i>
+
+                                        </span>
+
+                                        <input
+
+                                            type="text"
+
+                                            class="form-control"
+
+                                            name="employee_id"
+
+                                            placeholder="Enter your ID"
+
+                                            autocomplete="off"
+
+                                            required>
+
+                                    </div>
+
+                                    <label>
+
+                                        Password
+
+                                    </label>
+
+                                    <div class="input-group mb-4">
+
+                                        <span class="input-group-text">
+
+                                            <i class="bi bi-lock-fill"></i>
+
+                                        </span>
+
+                                        <input
+
+                                            type="password"
+
+                                            class="form-control"
+
+                                            name="password"
+
+                                            placeholder="Enter Password"
+
+                                            required>
+
+                                    </div>
+
+                                    <button
+                                        class="btn login-btn w-100">
+
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                                        Login
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- DEMO ACCOUNT CARD -->
+
+                <div class="demo-wrapper">
+
+                    <div class="demo-card">
+
+                        <div class="demo-heading">
+
+                            Demo Accounts
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="demo-item">
+
+                                    <div class="demo-icon manager">
+
+                                        <i class="bi bi-person-workspace"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <h6>
+
+                                            Manager Login
+
+                                        </h6>
+
+                                        <small>
+
+                                            ID :
+                                            <strong>MGR001</strong>
+
+                                            <br>
+
+                                            Password :
+                                            <strong>admin123</strong>
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="demo-item">
+
+                                    <div class="demo-icon employee">
+
+                                        <i class="bi bi-person-badge-fill"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <h6>
+
+                                            Employee Login
+
+                                        </h6>
+
+                                        <small>
+
+                                            ID :
+                                            <strong>EMP003</strong>
+
+                                            <br>
+
+                                            Password :
+                                            <strong>emp123</strong>
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                                                        </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-center login-footer">
+
+                    <small>
+
+                        © 2026 IFFCO Fertilizer Demand Forecasting System
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home | IFFCO Fertilizer Demand Forecasting
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="dashboard-card text-center mb-5">
+
+        <h1 class="display-5 fw-bold text-success">
+            IFFCO Fertilizer Demand Forecasting System
+        </h1>
+
+        <p class="lead mt-3">
+            Analyze fertilizer sales, monitor regional demand, and predict future fertilizer requirements using Data Analytics and Machine Learning.
+        </p>
+
+        <div class="mt-4">
+
+            <a href="/manager/dashboard" class="btn btn-success btn-lg me-3">
+                Manager Dashboard
+            </a>
+
+            <a href="/employee/dashboard" class="btn btn-outline-success btn-lg">
+                Employee Panel
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card text-center">
+
+                <h5>Total Sales</h5>
+
+                <h2 class="text-success mt-3">
+                    ₹0
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card text-center">
+
+                <h5>Products</h5>
+
+                <h2 class="text-primary mt-3">
+                    5
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card text-center">
+
+                <h5>States</h5>
+
+                <h2 class="text-warning mt-3">
+                    29
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card text-center">
+
+                <h5>Forecast</h5>
+
+                <h2 class="text-danger mt-3">
+                    Ready
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

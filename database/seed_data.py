@@ -1,0 +1,169 @@
+import sqlite3
+import os
+
+DB_PATH = os.path.join("database", "iffco.db")
+
+conn = sqlite3.connect(DB_PATH)
+cursor = conn.cursor()
+
+# ================= CLEAR MASTER DATA =================
+
+cursor.execute("DELETE FROM districts")
+cursor.execute("DELETE FROM sales")
+cursor.execute("DELETE FROM fertilizers")
+cursor.execute("DELETE FROM employees")
+cursor.execute("DELETE FROM states")
+
+# ================= EMPLOYEES =================
+
+employees = [
+
+    ("MGR001", "Manager", "manager@iffco.com", "Regional Sales Manager", "admin123", "manager"),
+
+    ("EMP1001", "Avinash Bhardwaj", "avinash@iffco.com", "Senior Sales Executive", "emp123", "employee"),
+
+    ("EMP1002", "Aman Rajput", "aman@iffco.com", "Area Sales Officer", "emp123", "employee"),
+
+    ("EMP1003", "Adarsh Bhardwaj", "adarsh@iffco.com", "Sales Executive", "emp123", "employee"),
+
+    ("EMP1004", "Nanak Pandey", "nanak@iffco.com", "Field Sales Officer", "emp123", "employee"),
+
+    ("EMP1005", "Amul Singh", "amul@iffco.com", "Territory Sales Officer", "emp123", "employee"),
+
+    ("EMP1006", "Rahul Verma", "rahul@iffco.com", "Agriculture Development Officer", "emp123", "employee")
+
+]
+
+cursor.executemany("""
+
+INSERT INTO employees
+(employee_id,name,email,designation,password,role)
+
+VALUES(?,?,?,?,?,?)
+
+""", employees)
+
+# ================= STATES =================
+
+states = [
+
+"Uttar Pradesh",
+"Bihar",
+"Punjab",
+"Haryana",
+"Rajasthan",
+"Madhya Pradesh",
+"Gujarat",
+"Maharashtra",
+"Chhattisgarh",
+"Jharkhand",
+"West Bengal",
+"Odisha",
+"Assam",
+"Tripura",
+"Meghalaya",
+"Nagaland",
+"Manipur",
+"Mizoram",
+"Arunachal Pradesh",
+"Sikkim",
+"Uttarakhand",
+"Himachal Pradesh",
+"Jammu and Kashmir",
+"Goa",
+"Karnataka",
+"Kerala",
+"Tamil Nadu",
+"Telangana",
+"Andhra Pradesh"
+
+]
+
+for state in states:
+
+    cursor.execute(
+        "INSERT INTO states(state_name) VALUES(?)",
+        (state,)
+    )
+
+# ================= DISTRICTS =================
+
+district_data = {
+
+    "Uttar Pradesh": ["Lucknow","Kanpur","Agra","Varanasi","Prayagraj"],
+    "Bihar": ["Patna","Gaya","Muzaffarpur","Bhagalpur","Darbhanga"],
+    "Punjab": ["Amritsar","Ludhiana","Patiala","Jalandhar","Bathinda"],
+    "Haryana": ["Gurugram","Faridabad","Hisar","Panipat","Karnal"],
+    "Rajasthan": ["Jaipur","Jodhpur","Kota","Ajmer","Udaipur"],
+    "Madhya Pradesh": ["Bhopal","Indore","Gwalior","Jabalpur","Ujjain"],
+    "Gujarat": ["Ahmedabad","Surat","Rajkot","Vadodara","Bhavnagar"],
+    "Maharashtra": ["Mumbai","Pune","Nagpur","Nashik","Aurangabad"],
+    "Chhattisgarh": ["Raipur","Bilaspur","Durg","Korba","Raigarh"],
+    "Jharkhand": ["Ranchi","Jamshedpur","Dhanbad","Bokaro","Hazaribagh"],
+    "West Bengal": ["Kolkata","Howrah","Asansol","Siliguri","Durgapur"],
+    "Odisha": ["Bhubaneswar","Cuttack","Rourkela","Puri","Sambalpur"],
+    "Assam": ["Guwahati","Silchar","Dibrugarh","Jorhat","Tezpur"],
+    "Tripura": ["Agartala"],
+    "Meghalaya": ["Shillong"],
+    "Nagaland": ["Kohima"],
+    "Manipur": ["Imphal"],
+    "Mizoram": ["Aizawl"],
+    "Arunachal Pradesh": ["Itanagar"],
+    "Sikkim": ["Gangtok"],
+    "Uttarakhand": ["Dehradun","Haridwar","Haldwani"],
+    "Himachal Pradesh": ["Shimla","Mandi","Dharamshala"],
+    "Jammu and Kashmir": ["Srinagar","Jammu"],
+    "Goa": ["Panaji"],
+    "Karnataka": ["Bengaluru","Mysuru","Hubballi","Belagavi"],
+    "Kerala": ["Kochi","Thiruvananthapuram","Kozhikode"],
+    "Tamil Nadu": ["Chennai","Coimbatore","Madurai","Salem"],
+    "Telangana": ["Hyderabad","Warangal","Karimnagar"],
+    "Andhra Pradesh": ["Vijayawada","Visakhapatnam","Guntur","Tirupati"]
+
+}
+
+for state_name, districts in district_data.items():
+
+    cursor.execute(
+        "SELECT id FROM states WHERE state_name=?",
+        (state_name,)
+    )
+
+    state_id = cursor.fetchone()[0]
+
+    for district in districts:
+
+        cursor.execute(
+            """
+            INSERT INTO districts(state_id,district_name)
+            VALUES(?,?)
+            """,
+            (state_id, district)
+        )
+
+# ================= FERTILIZERS =================
+
+fertilizers = [
+
+("IFFCO Urea", 266),
+("IFFCO DAP", 1350),
+("IFFCO NPK 10:26:26", 1470),
+("IFFCO NPK 20:20:0:13", 1425),
+("IFFCO MOP", 1700),
+("IFFCO Bio Fertilizer", 450)
+
+]
+
+cursor.executemany("""
+
+INSERT INTO fertilizers
+(fertilizer_name,price_per_bag)
+
+VALUES(?,?)
+
+""", fertilizers)
+
+conn.commit()
+conn.close()
+
+print("Master Data Inserted Successfully.")

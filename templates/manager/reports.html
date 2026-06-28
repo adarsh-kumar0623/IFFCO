@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}Sales Reports{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="row">
+
+        <div class="col-lg-2 p-0">
+
+            {% include "components/sidebar.html" %}
+
+        </div>
+
+        <div class="col-lg-10">
+
+            <!-- Header -->
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold text-success">
+
+                        Sales Reports
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Complete Sales Reports & Export Center
+
+                    </small>
+
+                </div>
+
+                <div>
+
+                    <a
+                        href="/manager/download-report"
+                        class="btn btn-success">
+
+                        <i class="bi bi-download me-2"></i>
+
+                        Export CSV
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Summary Cards -->
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-file-earmark-text-fill fs-1 text-success"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Total Records
+
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+
+                            {{ recent_sales|length }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-calendar3 fs-1 text-primary"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Report Type
+
+                        </h6>
+
+                        <h5 class="fw-bold">
+
+                            Complete Sales
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-cloud-arrow-down-fill fs-1 text-warning"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Export
+
+                        </h6>
+
+                        <h5 class="fw-bold">
+
+                            CSV
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-check-circle-fill fs-1 text-danger"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Status
+
+                        </h6>
+
+                        <h5 class="fw-bold text-success">
+
+                            Ready
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Filters -->
+
+            <div class="dashboard-card mb-4">
+
+                <div class="row">
+
+                    <div class="col-lg-4 mb-3">
+
+                        <input
+
+                            id="searchInput"
+
+                            class="form-control"
+
+                            placeholder="Search by State, District or Fertilizer">
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+
+                        <input
+                            type="date"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+
+                        <input
+                            type="date"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="col-lg-2 mb-3">
+
+                        <button
+                            class="btn btn-success w-100">
+
+                            <i class="bi bi-funnel-fill me-2"></i>
+
+                            Filter
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Report Table -->
+
+            <div class="dashboard-card">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-success">
+
+                            <tr>
+
+                                <th>Date</th>
+
+                                <th>State</th>
+
+                                <th>District</th>
+
+                                <th>Fertilizer</th>
+
+                                <th class="text-center">
+
+                                    Quantity
+
+                                </th>
+
+                                <th class="text-end">
+
+                                    Amount
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                                                    {% if recent_sales %}
+
+                            {% for sale in recent_sales %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ sale.sale_date }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ sale.state_name }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ sale.district_name }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ sale.fertilizer_name }}
+
+                                </td>
+
+                                <td class="text-center fw-bold">
+
+                                    {{ sale.quantity }}
+
+                                </td>
+
+                                <td class="text-end fw-bold text-success">
+
+                                    ₹ {{ "{:,.0f}".format(sale.total_amount) }}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="text-center py-5">
+
+                                    <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+
+                                    <h5 class="text-muted">
+
+                                        No Sales Records Found
+
+                                    </h5>
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="row">
+
+        <div class="col-lg-2 p-0">
+            {% include 'components/sidebar.html' %}
+        </div>
+
+        <div class="col-lg-10">
+
+            <h2 class="text-success fw-bold mb-4">
+                Settings
+            </h2>
+
+            <div class="dashboard-card">
+
+                <form>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Organization Name</label>
+                            <input type="text" class="form-control" value="IFFCO">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="admin@iffco.com">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" placeholder="+91 XXXXXXXXXX">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" placeholder="New Delhi">
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-success mt-3">
+                        Save Changes
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
