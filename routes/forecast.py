@@ -1,3 +1,6 @@
+from flask import Response
+import csv
+from io import StringIO
 from flask import (
     Blueprint,
     render_template,
@@ -128,16 +131,14 @@ def predict():
     alert = "--"
 
     if state_id and fertilizer_id:
-                result = Forecast.predict(
-
+        result = Forecast.predict(
             int(state_id),
 
             int(fertilizer_id)
-
         )
-
+        
         prediction = result["prediction"]
-
+        
         confidence = f'{result["confidence"]}%'
 
         demand = result["demand"]
@@ -222,16 +223,156 @@ def history():
 
         return redirect(url_for("auth.login"))
 
-    rows = Forecast.history()
+    return Forecast.history()
+# =====================================================
+# DOWNLOAD FORECAST REPORT
+# =====================================================
 
-    return {
+@forecast.route("/forecast/download")
+def download_forecast():
 
-        "history": [
+    if not manager_required():
 
-            dict(row)
+        return redirect(url_for("auth.login"))
 
-            for row in rows
+    state_id = request.args.get("state")
 
-        ]
+    fertilizer_id = request.args.get("fertilizer")
 
-    }
+    if not state_id or not fertilizer_id:
+
+        return redirect(url_for("forecast.forecast_dashboard"))
+
+    result = Forecast.predict(
+
+        int(state_id),
+
+        int(fertilizer_id)
+
+    )
+
+    output = StringIO()
+
+    writer = csv.writer(output)
+
+    writer.writerow([
+
+        "IFFCO AI Forecast Report"
+
+    ])
+
+    writer.writerow([])
+
+    writer.writerow([
+
+        "Predicted Demand",
+
+        result["prediction"]
+
+    ])
+
+    writer.writerow([
+
+        "Confidence",
+
+        f'{result["confidence"]}%'
+
+    ])
+
+    writer.writerow([
+
+        "Demand Level",
+
+        result["demand"]
+
+    ])
+
+    writer.writerow([
+
+        "Growth %",
+
+        result["growth"]
+
+    ])
+
+    writer.writerow([
+
+        "Trend",
+
+        result["trend"]
+
+    ])
+
+    writer.writerow([
+
+        "Risk",
+
+        result["risk"]
+
+    ])
+
+    writer.writerow([
+
+        "Recommended Stock",
+
+        result["recommended_stock"]
+
+    ])
+
+    writer.writerow([
+
+        "Inventory",
+
+        result["inventory"]
+
+    ])
+
+    writer.writerow([
+
+        "Procurement",
+
+        result["procurement"]
+
+    ])
+
+    writer.writerow([
+
+        "Distribution",
+
+        result["distribution"]
+
+    ])
+
+    writer.writerow([
+
+        "Season",
+
+        result["season"]
+
+    ])
+
+    writer.writerow([
+
+        "AI Recommendation",
+
+        result["recommendation"]
+
+    ])
+
+    output.seek(0)
+
+    return Response(
+
+        output.getvalue(),
+
+        mimetype="text/csv",
+
+        headers={
+
+            "Content-Disposition":
+
+            "attachment; filename=IFFCO_AI_Forecast_Report.csv"
+
+        }
+
+    )

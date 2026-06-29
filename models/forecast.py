@@ -292,33 +292,73 @@ class Forecast:
             "alert": alert,
 
         }
-
-
+    
     # ============================================
-    # HISTORY
-    # ============================================
+# HISTORY
+# ============================================
 
-    @staticmethod
-    def history():
+@staticmethod
+def history():
 
-        conn = get_connection()
+    conn = get_connection()
 
-        rows = conn.execute("""
+    rows = conn.execute("""
 
-            SELECT
+        SELECT
 
-                sale_date,
+            strftime('%m', sale_date) AS month,
 
-                SUM(quantity) AS demand
+            SUM(quantity) AS demand
 
-            FROM sales
+        FROM sales
 
-            GROUP BY sale_date
+        GROUP BY month
 
-            ORDER BY sale_date
+        ORDER BY month
 
-        """).fetchall()
+    """).fetchall()
 
-        conn.close()
+    conn.close()
 
-        return rows
+    month_names = [
+
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+
+    ]
+
+    labels = []
+
+    values = []
+
+    for row in rows:
+
+        labels.append(
+
+            month_names[int(row["month"]) - 1]
+
+        )
+
+        values.append(
+
+            row["demand"]
+
+        )
+
+    return {
+
+        "labels": labels,
+
+        "values": values
+
+    }

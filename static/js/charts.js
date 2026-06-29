@@ -1,10 +1,10 @@
 // ======================================================
-// MONTHLY REVENUE
+// MONTHLY REVENUE CHART
 // ======================================================
 
 const monthlyCanvas = document.getElementById("monthlySalesChart");
 
-if (monthlyCanvas) {
+if (monthlyCanvas && typeof monthLabels !== "undefined") {
 
     new Chart(monthlyCanvas, {
 
@@ -18,17 +18,25 @@ if (monthlyCanvas) {
 
                 {
 
-                    label: "Revenue",
+                    label: "Monthly Revenue",
 
                     data: monthValues,
 
                     borderColor: "#16A34A",
 
-                    backgroundColor: "rgba(22,163,74,.15)",
+                    backgroundColor: "rgba(22,163,74,0.12)",
+
+                    borderWidth: 3,
 
                     fill: true,
 
-                    tension: .4
+                    tension: 0.35,
+
+                    pointRadius: 5,
+
+                    pointHoverRadius: 8,
+
+                    pointBackgroundColor: "#16A34A"
 
                 }
 
@@ -40,11 +48,23 @@ if (monthlyCanvas) {
 
             responsive: true,
 
+            maintainAspectRatio: false,
+
             plugins: {
 
                 legend: {
 
                     display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
 
                 }
 
@@ -57,13 +77,14 @@ if (monthlyCanvas) {
 }
 
 
+
 // ======================================================
-// STATE REVENUE
+// STATE WISE SALES
 // ======================================================
 
 const stateCanvas = document.getElementById("stateSalesChart");
 
-if (stateCanvas) {
+if (stateCanvas && typeof stateLabels !== "undefined") {
 
     new Chart(stateCanvas, {
 
@@ -80,6 +101,8 @@ if (stateCanvas) {
                     label: "Revenue",
 
                     data: stateValues,
+
+                    borderRadius: 10,
 
                     backgroundColor: [
 
@@ -105,11 +128,78 @@ if (stateCanvas) {
 
             responsive: true,
 
+            maintainAspectRatio: false,
+
             plugins: {
 
                 legend: {
 
                     display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+// ======================================================
+// TOP FERTILIZER
+// ======================================================
+
+const fertilizerCanvas = document.getElementById("fertilizerChart");
+
+if (fertilizerCanvas && typeof fertilizerLabels !== "undefined") {
+
+    new Chart(fertilizerCanvas, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: fertilizerLabels,
+
+            datasets: [{
+
+                data: fertilizerValues,
+
+                backgroundColor: [
+
+                    "#16A34A",
+                    "#22C55E",
+                    "#0EA5E9",
+                    "#F59E0B",
+                    "#DC2626"
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
 
                 }
 
@@ -122,58 +212,6 @@ if (stateCanvas) {
 }
 
 
-// ======================================================
-// TOP FERTILIZER
-// ======================================================
-
-const fertilizerCanvas = document.getElementById("fertilizerChart");
-
-if (fertilizerCanvas) {
-
-    new Chart(fertilizerCanvas, {
-
-        type: "doughnut",
-
-        data: {
-
-            labels: fertilizerLabels,
-
-            datasets: [
-
-                {
-
-                    data: fertilizerValues,
-
-                    backgroundColor: [
-
-                        "#16A34A",
-
-                        "#22C55E",
-
-                        "#0EA5E9",
-
-                        "#F59E0B",
-
-                        "#DC2626"
-
-                    ]
-
-                }
-
-            ]
-
-        },
-
-        options: {
-
-            responsive: true
-
-        }
-
-    });
-
-}
-
 
 // ======================================================
 // TOP EMPLOYEE
@@ -181,7 +219,7 @@ if (fertilizerCanvas) {
 
 const employeeCanvas = document.getElementById("employeeChart");
 
-if (employeeCanvas) {
+if (employeeCanvas && typeof employeeLabels !== "undefined") {
 
     new Chart(employeeCanvas, {
 
@@ -191,25 +229,25 @@ if (employeeCanvas) {
 
             labels: employeeLabels,
 
-            datasets: [
+            datasets: [{
 
-                {
+                label: "Sales",
 
-                    label: "Sales",
+                data: employeeValues,
 
-                    data: employeeValues,
+                backgroundColor: "#16A34A",
 
-                    backgroundColor: "#16A34A"
+                borderRadius: 10
 
-                }
-
-            ]
+            }]
 
         },
 
         options: {
 
             responsive: true,
+
+            maintainAspectRatio: false,
 
             indexAxis: "y",
 
@@ -221,6 +259,16 @@ if (employeeCanvas) {
 
                 }
 
+            },
+
+            scales: {
+
+                x: {
+
+                    beginAtZero: true
+
+                }
+
             }
 
         }
@@ -228,25 +276,28 @@ if (employeeCanvas) {
     });
 
 }
+
+
+
 // ======================================================
-// FORECAST CHART
+// AI FORECAST CHART
 // ======================================================
 
 const forecastCanvas = document.getElementById("forecastChart");
 
-if (forecastCanvas) {
+if (
 
-    let labels = [];
+    forecastCanvas &&
 
-    let values = [];
+    typeof historyLabels !== "undefined" &&
 
-    if (historyLabels.length > 0) {
+    typeof historyValues !== "undefined"
 
-        labels = [...historyLabels];
+) {
 
-        values = [...historyValues];
+    let labels = [...historyLabels];
 
-    }
+    let values = [...historyValues];
 
     if (predicted_demand > 0) {
 
@@ -255,6 +306,16 @@ if (forecastCanvas) {
         values.push(predicted_demand);
 
     }
+
+    const pointColors = values.map((_, index) =>
+
+        index === values.length - 1
+
+            ? "#DC2626"
+
+            : "#16A34A"
+
+    );
 
     new Chart(forecastCanvas, {
 
@@ -276,27 +337,21 @@ if (forecastCanvas) {
 
                     backgroundColor: "rgba(22,163,74,0.12)",
 
-                    borderWidth: 4,
+                    borderWidth: 3,
+
+                    fill: true,
+
+                    tension: 0.4,
 
                     pointRadius: 6,
 
                     pointHoverRadius: 8,
 
-                    pointBackgroundColor: [
-
-                        ...new Array(values.length - 1).fill("#16A34A"),
-
-                        "#DC2626"
-
-                    ],
+                    pointBackgroundColor: pointColors,
 
                     pointBorderColor: "#ffffff",
 
-                    pointBorderWidth: 2,
-
-                    fill: true,
-
-                    tension: 0.35
+                    pointBorderWidth: 2
 
                 }
 
@@ -312,9 +367,9 @@ if (forecastCanvas) {
 
             interaction: {
 
-                intersect: false,
+                mode: "index",
 
-                mode: "index"
+                intersect: false
 
             },
 
@@ -334,7 +389,11 @@ if (forecastCanvas) {
 
                         label: function(context) {
 
-                            return " Demand : " + context.parsed.y + " Bags";
+                            return "Demand : " +
+
+                                   context.parsed.y +
+
+                                   " Bags";
 
                         }
 
