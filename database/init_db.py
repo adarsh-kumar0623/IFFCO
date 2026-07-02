@@ -10,15 +10,45 @@ cursor = conn.cursor()
 
 # ================= EMPLOYEES =================
 
+# ================= EMPLOYEES =================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS employees(
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+
     employee_id TEXT UNIQUE NOT NULL,
+
     name TEXT NOT NULL,
-    email TEXT,
+
+    email TEXT UNIQUE,
+
+    phone TEXT,
+
+    dob TEXT,
+
+    gender TEXT,
+
+    address TEXT,
+
+    state TEXT,
+
+    district TEXT,
+
+    branch TEXT,
+
+    joining_date TEXT,
+
     designation TEXT,
+
+    department TEXT,
+
+    photo TEXT,
+
     password TEXT,
+
     role TEXT NOT NULL
+
 )
 """)
 
@@ -56,6 +86,7 @@ CREATE TABLE IF NOT EXISTS fertilizers(
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS sales(
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     employee_id TEXT,
@@ -79,9 +110,9 @@ CREATE TABLE IF NOT EXISTS sales(
     FOREIGN KEY(district_id) REFERENCES districts(id),
 
     FOREIGN KEY(fertilizer_id) REFERENCES fertilizers(id)
+
 )
 """)
-
 conn.commit()
 conn.close()
 

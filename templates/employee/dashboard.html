@@ -8,55 +8,76 @@
 
     <div class="row">
 
+        <!-- Sidebar -->
+
         <div class="col-lg-2 p-0">
-            {% include 'components/sidebar.html' %}
+
+            {% include "components/sidebar.html" %}
+
         </div>
 
-        <div class="col-lg-10">
+        <!-- Main Content -->
 
-            <h2 class="text-success fw-bold mb-4">
-                Employee Dashboard
-            </h2>
+        <div class="col-lg-10 main-content">
 
-            <div class="row g-4">
+            <!-- ===================================================== -->
+            <!-- WELCOME BANNER -->
+            <!-- ===================================================== -->
 
-                <div class="col-md-4">
+            <div class="dashboard-card mb-4">
 
-                    <div class="dashboard-card text-center">
+                <div class="row align-items-center">
 
-                        <h5>Total Entries</h5>
+                    <div class="col-lg-8">
 
-                        <h2 class="text-success mt-3">
-                            0
-                        </h2>
+                        <div class="d-flex align-items-center">
+
+                            <img
+                                src="https://ui-avatars.com/api/?name={{ employee_name }}&background=2E7D32&color=fff&size=140"
+                                class="rounded-circle shadow"
+                                width="90">
+
+                            <div class="ms-4">
+
+                                <h2 class="fw-bold text-success mb-1">
+
+                                    Welcome Back,
+                                    {{ employee_name }}
+
+                                </h2>
+
+                                <p class="text-muted mb-2">
+
+                                    {{ designation }}
+                                    |
+                                    {{ branch }}
+
+                                </p>
+
+                                <span class="badge bg-success">
+
+                                    Employee ID :
+                                    {{ employee_id }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <div class="col-lg-4 text-end">
 
-                <div class="col-md-4">
+                        <a
+                            href="/employee/sales-entry"
+                            class="btn btn-success btn-lg">
 
-                    <div class="dashboard-card text-center">
+                            <i class="bi bi-plus-circle me-2"></i>
 
-                        <h5>Today's Sales</h5>
+                            New Sale
 
-                        <h2 class="text-primary mt-3">
-                            ₹0
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-4">
-
-                    <div class="dashboard-card text-center">
-
-                        <h5>Status</h5>
-
-                        <h2 class="text-warning mt-3">
-                            Active
-                        </h2>
+                        </a>
 
                     </div>
 
@@ -64,37 +85,622 @@
 
             </div>
 
-            <div class="dashboard-card mt-5">
+            <!-- ===================================================== -->
+            <!-- PERFORMANCE CARDS -->
+            <!-- ===================================================== -->
 
-                <h4 class="mb-3">
-                    Recent Entries
+            <div class="row g-4 mb-4">
+
+                <!-- Total Sales -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-cart-check-fill
+                                  fs-1 text-success"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            My Total Sales
+
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+
+                            {{ summary.total_sales }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <!-- Revenue -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-currency-rupee
+                                  fs-1 text-warning"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Total Revenue
+
+                        </h6>
+
+                        <h2 class="fw-bold text-warning">
+
+                            ₹ {{ "{:,.0f}".format(summary.total_revenue) }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <!-- Quantity -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-box-seam
+                                  fs-1 text-primary"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Total Quantity
+
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+
+                            {{ summary.total_quantity }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <!-- This Month -->
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-calendar-check
+                                  fs-2 text-success"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            This Month
+
+                        </h6>
+
+                        <h3 class="fw-bold">
+
+                            {{ summary.this_month_sales }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <!-- Last Month -->
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-calendar-minus
+                                  fs-2 text-secondary"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Last Month
+
+                        </h6>
+
+                        <h3 class="fw-bold">
+
+                            {{ summary.last_month_sales }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <!-- Growth -->
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-graph-up-arrow
+                                  fs-2 text-info"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Growth
+
+                        </h6>
+
+                        <h3 class="fw-bold text-info">
+
+                            {{ summary.growth }}%
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <!-- Performance -->
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-award-fill
+                                  fs-2 text-danger"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Performance
+
+                        </h6>
+
+                        <h5 class="fw-bold text-danger">
+
+                            {{ summary.performance }}
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+                        <!-- ===================================================== -->
+            <!-- TARGET & PERFORMANCE -->
+            <!-- ===================================================== -->
+
+            <div class="row g-4 mb-4">
+
+                <!-- Monthly Target -->
+
+                <div class="col-lg-8">
+
+                    <div class="dashboard-card h-100">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <h4 class="mb-0">
+
+                                <i class="bi bi-bullseye text-success me-2"></i>
+
+                                Monthly Target
+
+                            </h4>
+
+                            <span class="badge bg-success">
+
+                                {{ summary.achievement }}%
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress mb-3" style="height:16px;">
+
+                            <div
+                                class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                                style="width: {{ summary.achievement }}%">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row text-center">
+
+                            <div class="col-md-4">
+
+                                <h5 class="fw-bold text-success">
+
+                                    {{ summary.target }}
+
+                                </h5>
+
+                                <small class="text-muted">
+
+                                    Monthly Target
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <h5 class="fw-bold text-primary">
+
+                                    {{ summary.total_quantity }}
+
+                                </h5>
+
+                                <small class="text-muted">
+
+                                    Achieved
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <h5 class="fw-bold text-warning">
+
+                                    {{ summary.target-summary.total_quantity }}
+
+                                </h5>
+
+                                <small class="text-muted">
+
+                                    Remaining
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Best Fertilizer -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card h-100 text-center">
+
+                        <i class="bi bi-trophy-fill
+                                  fs-1 text-warning"></i>
+
+                        <h5 class="mt-3">
+
+                            Best Selling Fertilizer
+
+                        </h5>
+
+                        <h3 class="fw-bold text-success">
+
+                            {{ summary.best_fertilizer }}
+
+                        </h3>
+
+                        <small class="text-muted">
+
+                            Highest Quantity Sold
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ===================================================== -->
+            <!-- QUICK ACTIONS -->
+            <!-- ===================================================== -->
+
+            <div class="dashboard-card mb-4">
+
+                <h4 class="mb-4">
+
+                    Quick Actions
+
                 </h4>
+
+                <div class="row g-4">
+
+                    <div class="col-lg-3">
+
+                        <a
+                            href="/employee/sales-entry"
+                            class="btn btn-success w-100 py-4">
+
+                            <i class="bi bi-plus-circle-fill
+                                      d-block fs-2 mb-2"></i>
+
+                            Add New Sale
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <a
+                            href="/employee/history"
+                            class="btn btn-primary w-100 py-4">
+
+                            <i class="bi bi-clock-history
+                                      d-block fs-2 mb-2"></i>
+
+                            Sales History
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <a
+                            href="/employee/profile"
+                            class="btn btn-warning text-white w-100 py-4">
+
+                            <i class="bi bi-person-circle
+                                      d-block fs-2 mb-2"></i>
+
+                            My Profile
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <a
+                            href="/logout"
+                            class="btn btn-danger w-100 py-4">
+
+                            <i class="bi bi-box-arrow-right
+                                      d-block fs-2 mb-2"></i>
+
+                            Logout
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ===================================================== -->
+            <!-- PERFORMANCE SUMMARY -->
+            <!-- ===================================================== -->
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-graph-up-arrow
+                                  fs-1 text-success"></i>
+
+                        <h6 class="mt-3">
+
+                            Sales Growth
+
+                        </h6>
+
+                        <h3 class="fw-bold">
+
+                            {{ summary.growth }}%
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-star-fill
+                                  fs-1 text-warning"></i>
+
+                        <h6 class="mt-3">
+
+                            Employee Rating
+
+                        </h6>
+
+                        <h3 class="fw-bold">
+
+                            {{ summary.performance }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-bag-check-fill
+                                  fs-1 text-primary"></i>
+
+                        <h6 class="mt-3">
+
+                            Achievement
+
+                        </h6>
+
+                        <h3 class="fw-bold">
+
+                            {{ summary.achievement }}%
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+                        <!-- ===================================================== -->
+            <!-- RECENT SALES -->
+            <!-- ===================================================== -->
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+
+                        <h4 class="mb-1">
+
+                            Recent Sales
+
+                        </h4>
+
+                        <small class="text-muted">
+
+                            Your latest sales transactions
+
+                        </small>
+
+                    </div>
+
+                    <a
+                        href="/employee/history"
+                        class="btn btn-outline-success">
+
+                        <i class="bi bi-eye me-2"></i>
+
+                        View All
+
+                    </a>
+
+                </div>
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover align-middle">
 
                         <thead class="table-success">
 
                             <tr>
+
                                 <th>Date</th>
+
                                 <th>State</th>
+
                                 <th>District</th>
-                                <th>Product</th>
-                                <th>Quantity</th>
+
+                                <th>Fertilizer</th>
+
+                                <th class="text-center">
+
+                                    Quantity
+
+                                </th>
+
+                                <th class="text-end">
+
+                                    Revenue
+
+                                </th>
+
                             </tr>
 
                         </thead>
 
                         <tbody>
 
+                        {% if history %}
+
+                            {% for sale in history %}
+
                             <tr>
 
-                                <td colspan="5" class="text-center">
-                                    No Records Found
+                                <td>
+
+                                    {{ sale.sale_date }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ sale.state_name }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ sale.district_name }}
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        {{ sale.fertilizer_name }}
+
+                                    </span>
+
+                                </td>
+
+                                <td class="text-center fw-bold">
+
+                                    {{ sale.quantity }}
+
+                                </td>
+
+                                <td class="text-end fw-bold text-success">
+
+                                    ₹ {{ "{:,.0f}".format(sale.total_amount) }}
+
                                 </td>
 
                             </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    class="text-center py-5">
+
+                                    <i class="bi bi-inbox fs-1 d-block text-muted mb-3"></i>
+
+                                    <h5 class="text-muted">
+
+                                        No Sales Found
+
+                                    </h5>
+
+                                    <p class="text-muted mb-0">
+
+                                        Your recent sales will appear here.
+
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
 
                         </tbody>
 

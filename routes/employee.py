@@ -9,6 +9,7 @@ from flask import (
 )
 
 from models.employee import Employee
+
 from utils.master_data import (
     get_states,
     get_districts,
@@ -18,16 +19,24 @@ from utils.master_data import (
 employee = Blueprint("employee", __name__)
 
 
+# =====================================================
+# AUTH
+# =====================================================
+
 def employee_required():
+
     return session.get("user_role") == "employee"
 
 
-# ================= DASHBOARD =================
+# =====================================================
+# DASHBOARD
+# =====================================================
 
 @employee.route("/employee/dashboard")
 def dashboard():
 
     if not employee_required():
+
         return redirect(url_for("auth.login"))
 
     employee_id = session["employee_id"]
@@ -37,18 +46,33 @@ def dashboard():
     history = Employee.get_sales_history(employee_id)[:10]
 
     return render_template(
+
         "employee/dashboard.html",
+
         summary=summary,
-        history=history
+
+        history=history,
+
+        employee_name=session.get("employee_name"),
+
+        employee_id=employee_id,
+
+        designation="Sales Executive",
+
+        branch="Bareilly Branch"
+
     )
 
 
-# ================= SALES ENTRY =================
+# =====================================================
+# SALES ENTRY
+# =====================================================
 
 @employee.route("/employee/sales-entry", methods=["GET", "POST"])
 def sales_entry():
 
     if not employee_required():
+
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
@@ -68,12 +92,17 @@ def sales_entry():
         )
 
         flash(
+
             "Sales Entry Saved Successfully.",
+
             "success"
+
         )
 
         return redirect(
+
             url_for("employee.history")
+
         )
 
     return render_template(
@@ -87,58 +116,81 @@ def sales_entry():
     )
 
 
-# ================= SALES HISTORY =================
+# =====================================================
+# SALES HISTORY
+# =====================================================
 
 @employee.route("/employee/history")
 def history():
 
     if not employee_required():
+
         return redirect(url_for("auth.login"))
 
     history = Employee.get_sales_history(
+
         session["employee_id"]
+
     )
 
     return render_template(
+
         "employee/history.html",
+
         history=history
+
     )
 
 
-# ================= DELETE SALE =================
+# =====================================================
+# DELETE SALE
+# =====================================================
 
 @employee.route("/employee/delete-sale/<int:sale_id>")
 def delete_sale(sale_id):
 
     if not employee_required():
+
         return redirect(url_for("auth.login"))
 
     Employee.delete_sale(sale_id)
 
     flash(
+
         "Sales Record Deleted Successfully.",
+
         "success"
+
     )
 
     return redirect(
+
         url_for("employee.history")
+
     )
 
 
-# ================= PROFILE =================
+# =====================================================
+# PROFILE
+# =====================================================
 
 @employee.route("/employee/profile")
 def profile():
 
     if not employee_required():
+
         return redirect(url_for("auth.login"))
 
     return render_template(
+
         "employee/profile.html"
+
     )
 
 
-# ================= DISTRICT AJAX =================
+# =====================================================
+# DISTRICT AJAX
+# =====================================================
 
 @employee.route("/employee/get-districts/<int:state_id>")
 def get_state_districts(state_id):
@@ -146,6 +198,9 @@ def get_state_districts(state_id):
     districts = get_districts(state_id)
 
     return [
+
         dict(row)
+
         for row in districts
+
     ]
