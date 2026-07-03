@@ -8,10 +8,7 @@ os.makedirs("database", exist_ok=True)
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
-# ================= EMPLOYEES =================
-
-# ================= EMPLOYEES =================
-
+# ================= EMPLOYEES =================#
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS employees(
 

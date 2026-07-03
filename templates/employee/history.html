@@ -9,10 +9,14 @@
     <div class="row">
 
         <div class="col-lg-2 p-0">
+
             {% include "components/sidebar.html" %}
+
         </div>
 
-        <div class="col-lg-10">
+        <div class="col-lg-10 content-area">
+
+            <!-- ================= HEADER ================= -->
 
             <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -26,15 +30,120 @@
 
                     <small class="text-muted">
 
-                        All your submitted sales records
+                        Complete record of your fertilizer sales
 
                     </small>
+
+                </div>
+
+                <a
+                    href="/employee/sales-entry"
+                    class="btn btn-success">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+
+                    New Sale
+
+                </a>
+
+            </div>
+
+            <!-- ================= SUMMARY ================= -->
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-cart-check-fill fs-1 text-success"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Total Sales
+
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+
+                            {{ summary.total_sales }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-box-seam fs-1 text-primary"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Total Quantity
+
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+
+                            {{ summary.total_quantity }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-currency-rupee fs-1 text-warning"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Revenue
+
+                        </h6>
+
+                        <h2 class="fw-bold text-warning">
+
+                            ₹ {{ "{:,.0f}".format(summary.total_revenue) }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <div class="dashboard-card text-center">
+
+                        <i class="bi bi-graph-up-arrow fs-1 text-danger"></i>
+
+                        <h6 class="mt-3 text-muted">
+
+                            Growth
+
+                        </h6>
+
+                        <h2 class="fw-bold text-danger">
+
+                            {{ summary.growth }}%
+
+                        </h2>
+
+                    </div>
 
                 </div>
 
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
+
             {% if messages %}
 
                 {% for category,message in messages %}
@@ -48,18 +157,59 @@
                 {% endfor %}
 
             {% endif %}
+
             {% endwith %}
+
+            <!-- ================= TABLE CARD ================= -->
 
             <div class="dashboard-card">
 
-                <div class="row mb-3">
+                <div class="row mb-4">
 
                     <div class="col-md-4">
 
                         <input
+
                             id="searchInput"
+
                             class="form-control"
-                            placeholder="Search sales...">
+
+                            placeholder="Search by State / District / Fertilizer">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <select
+                            id="fertilizerFilter"
+                            class="form-select">
+
+                            <option value="">
+
+                                All Fertilizers
+
+                            </option>
+                                                        {% for sale in history %}
+
+                            <option>
+
+                                {{ sale.fertilizer_name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4 text-end">
+
+                        <span class="badge bg-success fs-6">
+
+                            {{ history|length }} Records
+
+                        </span>
 
                     </div>
 
@@ -67,19 +217,39 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover align-middle">
+                    <table
+                        id="salesTable"
+                        class="table table-hover align-middle">
 
                         <thead class="table-success">
 
                             <tr>
 
                                 <th>Date</th>
+
                                 <th>State</th>
+
                                 <th>District</th>
+
                                 <th>Fertilizer</th>
-                                <th>Quantity</th>
-                                <th>Total Amount</th>
-                                <th>Action</th>
+
+                                <th class="text-center">
+
+                                    Quantity
+
+                                </th>
+
+                                <th class="text-end">
+
+                                    Revenue
+
+                                </th>
+
+                                <th class="text-center">
+
+                                    Action
+
+                                </th>
 
                             </tr>
 
@@ -89,7 +259,7 @@
 
                         {% if history %}
 
-                            {% for sale in history %}
+                        {% for sale in history %}
 
                             <tr>
 
@@ -113,27 +283,34 @@
 
                                 <td>
 
-                                    {{ sale.fertilizer_name }}
+                                    <span class="badge bg-success">
+
+                                        {{ sale.fertilizer_name }}
+
+                                    </span>
 
                                 </td>
 
-                                <td>
+                                <td class="text-center fw-bold">
 
                                     {{ sale.quantity }}
 
                                 </td>
 
-                                <td class="fw-bold text-success">
+                                <td class="text-end fw-bold text-success">
 
                                     ₹ {{ "{:,.0f}".format(sale.total_amount) }}
 
                                 </td>
 
-                                <td>
+                                <td class="text-center">
 
                                     <a
-                                    href="/employee/delete-sale/{{ sale.id }}"
-                                    class="btn btn-sm btn-danger delete-sale-btn">
+
+                                        href="/employee/delete-sale/{{ sale.id }}"
+
+                                        class="btn btn-sm btn-danger delete-sale-btn">
+
                                         <i class="bi bi-trash"></i>
 
                                     </a>
@@ -142,19 +319,31 @@
 
                             </tr>
 
-                            {% endfor %}
+                        {% endfor %}
 
                         {% else %}
 
                             <tr>
 
                                 <td
+
                                     colspan="7"
-                                    class="text-center py-5 text-muted">
 
-                                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                                    class="text-center py-5">
 
-                                    No Sales Records Found
+                                    <i class="bi bi-inbox fs-1 d-block text-muted mb-3"></i>
+
+                                    <h5 class="text-muted">
+
+                                        No Sales Found
+
+                                    </h5>
+
+                                    <p class="text-muted mb-0">
+
+                                        Your sales history will appear here.
+
+                                    </p>
 
                                 </td>
 
@@ -169,11 +358,117 @@
                 </div>
 
             </div>
-
-        </div>
+                    </div>
 
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+const searchInput = document.getElementById("searchInput");
+
+const fertilizerFilter = document.getElementById("fertilizerFilter");
+
+const rows = document.querySelectorAll("#salesTable tbody tr");
+
+function filterTable(){
+
+    const search = searchInput.value.toLowerCase();
+
+    const fertilizer = fertilizerFilter.value.toLowerCase();
+
+    rows.forEach(row=>{
+
+        const text = row.innerText.toLowerCase();
+
+        const fert = row.cells[3].innerText.toLowerCase();
+
+        const matchSearch = text.includes(search);
+
+        const matchFertilizer =
+
+            fertilizer==="" ||
+
+            fert===fertilizer;
+
+        if(matchSearch && matchFertilizer){
+
+            row.style.display="";
+
+        }
+
+        else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+}
+
+searchInput.addEventListener(
+
+    "keyup",
+
+    filterTable
+
+);
+
+fertilizerFilter.addEventListener(
+
+    "change",
+
+    filterTable
+
+);
+
+
+// ================= DELETE CONFIRM =================
+
+document.querySelectorAll(".delete-sale-btn").forEach(btn=>{
+
+    btn.addEventListener("click",function(e){
+
+        e.preventDefault();
+
+        const url=this.href;
+
+        Swal.fire({
+
+            title:"Delete Record?",
+
+            text:"This action cannot be undone.",
+
+            icon:"warning",
+
+            showCancelButton:true,
+
+            confirmButtonColor:"#198754",
+
+            cancelButtonColor:"#dc3545",
+
+            confirmButtonText:"Yes, Delete"
+
+        }).then((result)=>{
+
+            if(result.isConfirmed){
+
+                window.location=url;
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

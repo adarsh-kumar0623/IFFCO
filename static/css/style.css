@@ -1018,7 +1018,257 @@ footer{
     }
 
 }
+/* =====================================================
+   FIXED SIDEBAR
+===================================================== */
 
+.sidebar{
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 16.666667%;
+
+    height: 100vh;
+
+    overflow-y: auto;
+
+    z-index: 1050;
+
+}
+
+/* =====================================================
+   CONTENT AREA
+===================================================== */
+
+@media(min-width:992px){
+
+    .content-area{
+
+        margin-left:16.666667%;
+
+        width:83.333333%;
+
+    }
+
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:991px){
+
+    .sidebar{
+
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+    }
+
+    .content-area{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#2E7D32;
+
+    border-radius:20px;
+
+}
+
+/* =====================================================
+   DASHBOARD CARD HOVER
+===================================================== */
+
+.dashboard-card{
+
+    transition:0.35s;
+
+    border:none;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(46,125,50,.15);
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+
+    border-radius:12px;
+
+    transition:.3s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table{
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+.table tbody tr{
+
+    transition:.25s;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8fff8;
+
+}
+
+
+/* =====================================================
+   KPI CARDS
+===================================================== */
+
+.dashboard-card h2{
+
+    font-weight:700;
+
+}
+
+.dashboard-card i{
+
+    transition:.35s;
+
+}
+
+.dashboard-card:hover i{
+
+    transform:scale(1.15);
+
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress{
+
+    height:14px;
+
+    border-radius:20px;
+
+}
+
+.progress-bar{
+
+    border-radius:20px;
+
+}
+
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.form-control,
+
+.form-select{
+
+    border-radius:12px;
+
+    min-height:48px;
+
+}
+
+.form-control:focus,
+
+.form-select:focus{
+
+    border-color:#2E7D32;
+
+    box-shadow:0 0 0 .2rem rgba(46,125,50,.15);
+
+}
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
+
+    border-radius:10px;
+
+    padding:8px 12px;
+
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+h2{
+
+    letter-spacing:.3px;
+
+}
+
+
+/* =====================================================
+   SMOOTH SCROLL
+===================================================== */
+
+html{
+
+    scroll-behavior:smooth;
+
+}
 /* =====================================================
                 END
 ===================================================== */

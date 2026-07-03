@@ -18,28 +18,184 @@ cursor.execute("DELETE FROM states")
 
 employees = [
 
-    ("MGR001", "Manager", "manager@iffco.com", "Regional Sales Manager", "admin123", "manager"),
+(
+"MGR001",
+"Manager",
+"manager@iffco.com",
+"9999999999",
+"01-01-1985",
+"Male",
+"IFFCO Head Office",
+"Uttar Pradesh",
+"Lucknow",
+"Lucknow Branch",
+"01-04-2012",
+"Regional Sales Manager",
+"Sales",
+"",
+"admin123",
+"manager"
+),
 
-    ("EMP1001", "Avinash Bhardwaj", "avinash@iffco.com", "Senior Sales Executive", "emp123", "employee"),
+(
+"EMP1001",
+"Avinash Bhardwaj",
+"avinash@iffco.com",
+"9876543201",
+"12-05-1998",
+"Male",
+"Bareilly",
+"Uttar Pradesh",
+"Bareilly",
+"Bareilly Branch",
+"15-07-2022",
+"Senior Sales Executive",
+"Sales",
+"",
+"emp123",
+"employee"
+),
 
-    ("EMP1002", "Aman Rajput", "aman@iffco.com", "Area Sales Officer", "emp123", "employee"),
+(
+"EMP1002",
+"Aman Rajput",
+"aman@iffco.com",
+"9876543202",
+"08-11-1999",
+"Male",
+"Kanpur",
+"Uttar Pradesh",
+"Kanpur",
+"Kanpur Branch",
+"10-02-2023",
+"Area Sales Officer",
+"Sales",
+"",
+"emp123",
+"employee"
+),
 
-    ("EMP1003", "Adarsh Bhardwaj", "adarsh@iffco.com", "Sales Executive", "emp123", "employee"),
+(
+"EMP1003",
+"Adarsh Bhardwaj",
+"adarsh@iffco.com",
+"9876543203",
+"14-08-2004",
+"Male",
+"Bareilly",
+"Uttar Pradesh",
+"Bareilly",
+"Bareilly Branch",
+"01-06-2025",
+"Sales Executive",
+"Sales",
+"",
+"emp123",
+"employee"
+),
 
-    ("EMP1004", "Nanak Pandey", "nanak@iffco.com", "Field Sales Officer", "emp123", "employee"),
+(
+"EMP1004",
+"Nanak Pandey",
+"nanak@iffco.com",
+"9876543204",
+"15-03-1998",
+"Male",
+"Prayagraj",
+"Uttar Pradesh",
+"Prayagraj",
+"Prayagraj Branch",
+"22-09-2021",
+"Field Sales Officer",
+"Sales",
+"",
+"emp123",
+"employee"
+),
 
-    ("EMP1005", "Amul Singh", "amul@iffco.com", "Territory Sales Officer", "emp123", "employee"),
+(
+"EMP1005",
+"Amul Singh",
+"amul@iffco.com",
+"9876543205",
+"09-09-1997",
+"Male",
+"Jaipur",
+"Rajasthan",
+"Jaipur",
+"Jaipur Branch",
+"14-01-2020",
+"Territory Sales Officer",
+"Sales",
+"",
+"emp123",
+"employee"
+),
 
-    ("EMP1006", "Rahul Verma", "rahul@iffco.com", "Agriculture Development Officer", "emp123", "employee")
+(
+"EMP1006",
+"Rahul Verma",
+"rahul@iffco.com",
+"9876543206",
+"20-12-1996",
+"Male",
+"Lucknow",
+"Uttar Pradesh",
+"Lucknow",
+"Lucknow Branch",
+"10-11-2019",
+"Agriculture Development Officer",
+"Sales",
+"",
+"emp123",
+"employee"
+)
 
 ]
 
 cursor.executemany("""
 
-INSERT INTO employees
-(employee_id,name,email,designation,password,role)
+INSERT INTO employees(
 
-VALUES(?,?,?,?,?,?)
+employee_id,
+
+name,
+
+email,
+
+phone,
+
+dob,
+
+gender,
+
+address,
+
+state,
+
+district,
+
+branch,
+
+joining_date,
+
+designation,
+
+department,
+
+photo,
+
+password,
+
+role
+
+)
+
+VALUES(
+
+?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+
+)
 
 """, employees)
 
@@ -145,12 +301,12 @@ for state_name, districts in district_data.items():
 
 fertilizers = [
 
-("IFFCO Urea", 266),
-("IFFCO DAP", 1350),
-("IFFCO NPK 10:26:26", 1470),
-("IFFCO NPK 20:20:0:13", 1425),
-("IFFCO MOP", 1700),
-("IFFCO Bio Fertilizer", 450)
+("IFFCO Urea",266),
+("IFFCO DAP",1350),
+("IFFCO NPK 10:26:26",1470),
+("IFFCO NPK 20:20:0:13",1425),
+("IFFCO MOP",1700),
+("IFFCO Bio Fertilizer",450)
 
 ]
 

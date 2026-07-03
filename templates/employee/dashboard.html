@@ -18,7 +18,7 @@
 
         <!-- Main Content -->
 
-        <div class="col-lg-10 main-content">
+        <div class="col-lg-10 main-content content-area">
 
             <!-- ===================================================== -->
             <!-- WELCOME BANNER -->
@@ -267,7 +267,7 @@
                 </div>
 
             </div>
-                        <!-- ===================================================== -->
+            <!-- ===================================================== -->
             <!-- TARGET & PERFORMANCE -->
             <!-- ===================================================== -->
 
@@ -554,7 +554,40 @@
                 </div>
 
             </div>
-                        <!-- ===================================================== -->
+            <!-- ===================================================== -->
+            <!-- MONTHLY SALES CHART -->
+            <!-- ===================================================== -->
+          
+            <div class="dashboard-card mb-4">
+                
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                
+                <div>
+                    
+                    <h4 class="mb-1">
+                        Monthly Sales Trend
+
+                    </h4>
+
+                    <small class="text-muted">
+                        Quantity sold month-wise
+
+                    </small>
+                </div>
+                
+                <span class="badge bg-success">
+                    
+                    {{ summary.performance }}
+
+                </span>
+            
+            </div>
+            
+            <canvas id="salesChart" height="90"></canvas>
+        
+        </div>
+
+            <!-- ===================================================== -->
             <!-- RECENT SALES -->
             <!-- ===================================================== -->
 
@@ -715,5 +748,60 @@
     </div>
 
 </div>
+
+{% endblock %}
+{% block js %}
+
+<script>
+
+const ctx = document.getElementById("salesChart");
+
+if(ctx){
+
+    new Chart(ctx,{
+
+        type:"line",
+
+        data:{
+
+            labels:{{ summary.chart_labels|tojson }},
+
+            datasets:[{
+
+                label:"Sales Quantity",
+
+                data:{{ summary.chart_values|tojson }},
+
+                borderWidth:3,
+
+                fill:true,
+
+                tension:0.4
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            plugins:{
+
+                legend:{
+
+                    display:true
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+</script>
 
 {% endblock %}

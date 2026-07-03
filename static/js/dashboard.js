@@ -1,50 +1,160 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    // Dashboard Counter Animation
-    const counters = document.querySelectorAll(".counter");
+    // ==========================================
+    // COUNTER ANIMATION
+    // ==========================================
+
+    const counters = document.querySelectorAll("h2, h3");
 
     counters.forEach(counter => {
 
-        const target = Number(counter.getAttribute("data-target")) || 0;
+        const text = counter.innerText
+            .replace(/,/g, "")
+            .replace("₹", "")
+            .replace("%", "")
+            .trim();
 
-        let count = 0;
+        const target = parseFloat(text);
 
-        const speed = Math.max(1, Math.ceil(target / 100));
+        if (isNaN(target)) return;
 
-        const updateCounter = () => {
+        let current = 0;
 
-            if (count < target) {
+        const increment = target / 60;
 
-                count += speed;
+        function updateCounter() {
 
-                if (count > target) count = target;
+            if (current < target) {
 
-                counter.innerText = count.toLocaleString();
+                current += increment;
+
+                if (target >= 1000) {
+
+                    counter.innerText =
+                        Math.floor(current).toLocaleString();
+
+                } else {
+
+                    counter.innerText =
+                        Math.floor(current);
+
+                }
 
                 requestAnimationFrame(updateCounter);
 
+            } else {
+
+                if (text.includes(".")) {
+
+                    counter.innerText = target.toFixed(2);
+
+                } else if (target >= 1000) {
+
+                    counter.innerText =
+                        target.toLocaleString();
+
+                } else {
+
+                    counter.innerText = target;
+
+                }
+
             }
 
-        };
+        }
 
         updateCounter();
 
     });
 
-    // Current Date
-    const dateBox = document.getElementById("currentDate");
 
-    if (dateBox) {
+    // ==========================================
+    // CARD HOVER EFFECT
+    // ==========================================
 
-        const today = new Date();
+    document.querySelectorAll(".dashboard-card").forEach(card => {
 
-        dateBox.innerHTML = today.toLocaleDateString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
+        card.addEventListener("mouseenter", function () {
+
+            this.style.transform = "translateY(-8px)";
+
+            this.style.transition = "0.35s";
+
         });
 
-    }
+        card.addEventListener("mouseleave", function () {
+
+            this.style.transform = "translateY(0px)";
+
+        });
+
+    });
+
+
+    // ==========================================
+    // BUTTON RIPPLE EFFECT
+    // ==========================================
+
+    document.querySelectorAll(".btn").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            this.style.transform = "scale(.96)";
+
+            setTimeout(() => {
+
+                this.style.transform = "";
+
+            }, 120);
+
+        });
+
+    });
+
+
+    // ==========================================
+    // TABLE ROW HIGHLIGHT
+    // ==========================================
+
+    document.querySelectorAll("tbody tr").forEach(row => {
+
+        row.addEventListener("mouseenter", function () {
+
+            this.style.transition = ".25s";
+
+            this.style.transform = "scale(1.01)";
+
+        });
+
+        row.addEventListener("mouseleave", function () {
+
+            this.style.transform = "scale(1)";
+
+        });
+
+    });
+
+
+    // ==========================================
+    // FADE-IN ANIMATION
+    // ==========================================
+
+    document.querySelectorAll(".dashboard-card").forEach((card, index) => {
+
+        card.style.opacity = "0";
+
+        card.style.transform = "translateY(25px)";
+
+        setTimeout(() => {
+
+            card.style.transition = ".5s";
+
+            card.style.opacity = "1";
+
+            card.style.transform = "translateY(0px)";
+
+        }, index * 120);
+
+    });
 
 });

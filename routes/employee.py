@@ -45,6 +45,8 @@ def dashboard():
 
     history = Employee.get_sales_history(employee_id)[:10]
 
+    profile = Employee.get_profile(employee_id)
+
     return render_template(
 
         "employee/dashboard.html",
@@ -53,13 +55,7 @@ def dashboard():
 
         history=history,
 
-        employee_name=session.get("employee_name"),
-
-        employee_id=employee_id,
-
-        designation="Sales Executive",
-
-        branch="Bareilly Branch"
+        profile=profile
 
     )
 
@@ -133,11 +129,19 @@ def history():
 
     )
 
+    summary = Employee.get_dashboard(
+
+        session["employee_id"]
+
+    )
+
     return render_template(
 
         "employee/history.html",
 
-        history=history
+        history=history,
+
+        summary=summary
 
     )
 
@@ -181,9 +185,19 @@ def profile():
 
         return redirect(url_for("auth.login"))
 
+    employee_id = session["employee_id"]
+
+    profile = Employee.get_profile(employee_id)
+
+    summary = Employee.get_dashboard(employee_id)
+
     return render_template(
 
-        "employee/profile.html"
+        "employee/profile.html",
+
+        profile=profile,
+
+        summary=summary
 
     )
 

@@ -1,177 +1,377 @@
-# ================= DASHBOARD =================
+from models.database import get_connection
 
-@staticmethod
-def get_dashboard(employee_id):
 
-    conn = get_connection()
+class Employee:
 
-    data = {}
+    # =====================================================
+    # DASHBOARD
+    # =====================================================
 
-    # ==========================================
-    # TOTAL SALES
-    # ==========================================
+    @staticmethod
+    def get_dashboard(employee_id):
 
-    data["total_sales"] = conn.execute("""
+        conn = get_connection()
 
-        SELECT COUNT(*)
+        data = {}
 
-        FROM sales
+        # Total Sales
 
-        WHERE employee_id=?
+        data["total_sales"] = conn.execute("""
 
-    """, (employee_id,)).fetchone()[0]
+            SELECT COUNT(*)
 
-    # ==========================================
-    # TOTAL QUANTITY
-    # ==========================================
+            FROM sales
 
-    data["total_quantity"] = conn.execute("""
+            WHERE employee_id=?
 
-        SELECT IFNULL(SUM(quantity),0)
+        """, (employee_id,)).fetchone()[0]
 
-        FROM sales
+        # Total Quantity
 
-        WHERE employee_id=?
+        data["total_quantity"] = conn.execute("""
 
-    """, (employee_id,)).fetchone()[0]
+            SELECT IFNULL(SUM(quantity),0)
 
-    # ==========================================
-    # TOTAL REVENUE
-    # ==========================================
+            FROM sales
 
-    data["total_revenue"] = conn.execute("""
+            WHERE employee_id=?
 
-        SELECT IFNULL(SUM(total_amount),0)
+        """, (employee_id,)).fetchone()[0]
 
-        FROM sales
+        # Total Revenue
 
-        WHERE employee_id=?
+        data["total_revenue"] = conn.execute("""
 
-    """, (employee_id,)).fetchone()[0]
+            SELECT IFNULL(SUM(total_amount),0)
 
-    # ==========================================
-    # THIS MONTH SALES
-    # ==========================================
+            FROM sales
 
-    data["this_month_sales"] = conn.execute("""
+            WHERE employee_id=?
 
-        SELECT COUNT(*)
+        """, (employee_id,)).fetchone()[0]
 
-        FROM sales
+        # This Month
 
-        WHERE employee_id=?
+        data["this_month_sales"] = conn.execute("""
 
-        AND strftime('%m',sale_date)=strftime('%m','now')
+            SELECT COUNT(*)
 
-    """, (employee_id,)).fetchone()[0]
+            FROM sales
 
-    # ==========================================
-    # LAST MONTH SALES
-    # ==========================================
+            WHERE employee_id=?
 
-    data["last_month_sales"] = conn.execute("""
+            AND strftime('%m',sale_date)=strftime('%m','now')
 
-        SELECT COUNT(*)
+        """, (employee_id,)).fetchone()[0]
 
-        FROM sales
+        # Last Month
 
-        WHERE employee_id=?
+        data["last_month_sales"] = conn.execute("""
 
-        AND strftime('%m',sale_date)=strftime('%m','now','-1 month')
+            SELECT COUNT(*)
 
-    """, (employee_id,)).fetchone()[0]
+            FROM sales
 
-    # ==========================================
-    # GROWTH %
-    # ==========================================
+            WHERE employee_id=?
 
-    last = data["last_month_sales"]
+            AND strftime('%m',sale_date)=strftime('%m','now','-1 month')
 
-    current = data["this_month_sales"]
+        """, (employee_id,)).fetchone()[0]
 
-    if last == 0:
+        last = data["last_month_sales"]
 
-        growth = 100 if current > 0 else 0
+        current = data["this_month_sales"]
 
-    else:
+        if last == 0:
 
-        growth = round(((current-last)/last)*100,2)
+            growth = 100 if current > 0 else 0
 
-    data["growth"] = growth
+        else:
+
+            growth = round(((current-last)/last)*100,2)
+
+        data["growth"] = growth
+
+        if growth >= 20:
+
+            data["performance"] = "Excellent"
+
+        elif growth >= 5:
+
+            data["performance"] = "Good"
+
+        elif growth >= 0:
+
+            data["performance"] = "Average"
+
+        else:
+
+            data["performance"] = "Needs Improvement"
+
+        best = conn.execute("""
+
+            SELECT
+
+                fertilizers.fertilizer_name,
+
+                SUM(quantity) total
+
+            FROM sales
+
+            JOIN fertilizers
+
+            ON sales.fertilizer_id=fertilizers.id
+
+            WHERE employee_id=?
+
+            GROUP BY fertilizers.fertilizer_name
+
+            ORDER BY total DESC
+
+            LIMIT 1
+
+        """,(employee_id,)).fetchone()
+
+        data["best_fertilizer"] = (
+
+            best["fertilizer_name"]
+
+            if best else "--"
+
+        )
+
+        data["target"] = 500
+
+        data["achievement"] = round(
+
+            (data["total_quantity"]/500)*100,
+
+            2
+
+        ) if data["total_quantity"] else 0
         # ==========================================
-    # PERFORMANCE
-    # ==========================================
+        # MONTHLY SALES CHART
+        # ==========================================
+        
+        chart = conn.execute("""
+                             
+            SELECT
+                             
+                strftime('%m', sale_date) AS month,
 
-    if growth >= 20:
+                SUM(quantity) AS qty
 
-        data["performance"] = "Excellent"
+            FROM sales
+           
+            WHERE employee_id=?
 
-    elif growth >= 5:
+            GROUP BY month
 
-        data["performance"] = "Good"
+            ORDER BY month
 
-    elif growth >= 0:
+        """, (employee_id,)).fetchall()
+        
+        month_names = [
+            
+            "Jan","Feb","Mar","Apr",
+            "May","Jun","Jul","Aug",
+            "Sep","Oct","Nov","Dec"
+        ]
+        
+        labels = []
+        
+        values = []
+        
+        for row in chart:
+            labels.append(
+                month_names[int(row["month"])-1]
+            )
+            
+            values.append(
+                row["qty"]
+            )
+            
+        data["chart_labels"] = labels
+        
+        data["chart_values"] = values
+        
+        conn.close()
+        
+        return data
 
-        data["performance"] = "Average"
+    # =====================================================
+    # PROFILE
+    # =====================================================
 
-    else:
+    @staticmethod
+    def get_profile(employee_id):
 
-        data["performance"] = "Needs Improvement"
+        conn = get_connection()
 
-    # ==========================================
-    # BEST SELLING FERTILIZER
-    # ==========================================
+        profile = conn.execute("""
 
-    best = conn.execute("""
+            SELECT *
 
-        SELECT
+            FROM employees
 
-            fertilizers.fertilizer_name,
+            WHERE employee_id=?
 
-            SUM(quantity) AS total
+        """,(employee_id,)).fetchone()
 
-        FROM sales
+        conn.close()
 
-        JOIN fertilizers
+        return profile
+    
+    # =====================================================
+    # SAVE SALE
+    # =====================================================
 
-        ON sales.fertilizer_id = fertilizers.id
+    @staticmethod
+    def save_sale(
 
-        WHERE employee_id=?
+        employee_id,
 
-        GROUP BY fertilizers.fertilizer_name
+        state_id,
 
-        ORDER BY total DESC
+        district_id,
 
-        LIMIT 1
+        fertilizer_id,
 
-    """, (employee_id,)).fetchone()
+        quantity
 
-    if best:
+    ):
 
-        data["best_fertilizer"] = best["fertilizer_name"]
+        conn = get_connection()
 
-    else:
+        price = conn.execute("""
 
-        data["best_fertilizer"] = "--"
+            SELECT price_per_bag
 
-    # ==========================================
-    # MONTHLY TARGET
-    # ==========================================
+            FROM fertilizers
 
-    target = 500
+            WHERE id=?
 
-    data["target"] = target
+        """, (fertilizer_id,)).fetchone()[0]
 
-    achieved = data["total_quantity"]
+        total = int(quantity) * float(price)
 
-    data["achievement"] = round(
+        conn.execute("""
 
-        (achieved / target) * 100,
+            INSERT INTO sales(
 
-        2
+                employee_id,
 
-    ) if target else 0
+                state_id,
 
-    conn.close()
+                district_id,
 
-    return data
+                fertilizer_id,
+
+                quantity,
+
+                total_amount,
+
+                sale_date
+
+            )
+
+            VALUES(
+
+                ?,?,?,?,?,?,
+
+                DATE('now')
+
+            )
+
+        """, (
+
+            employee_id,
+
+            state_id,
+
+            district_id,
+
+            fertilizer_id,
+
+            quantity,
+
+            total
+
+        ))
+
+        conn.commit()
+
+        conn.close()
+
+    # =====================================================
+    # SALES HISTORY
+    # =====================================================
+
+    @staticmethod
+    def get_sales_history(employee_id):
+
+        conn = get_connection()
+
+        history = conn.execute("""
+
+            SELECT
+
+                sales.id,
+
+                sales.sale_date,
+
+                states.state_name,
+
+                districts.district_name,
+
+                fertilizers.fertilizer_name,
+
+                sales.quantity,
+
+                sales.total_amount
+
+            FROM sales
+
+            JOIN states
+
+            ON sales.state_id = states.id
+
+            JOIN districts
+
+            ON sales.district_id = districts.id
+
+            JOIN fertilizers
+
+            ON sales.fertilizer_id = fertilizers.id
+
+            WHERE sales.employee_id = ?
+
+            ORDER BY sales.id DESC
+
+        """, (employee_id,)).fetchall()
+
+        conn.close()
+
+        return history
+    
+    # =====================================================
+    # DELETE SALE
+    # =====================================================
+
+    @staticmethod
+    def delete_sale(sale_id):
+
+        conn = get_connection()
+
+        conn.execute("""
+
+            DELETE FROM sales
+
+            WHERE id=?
+
+        """, (sale_id,))
+
+        conn.commit()
+
+        conn.close()
+
