@@ -6,23 +6,25 @@
 
 <div class="login-page">
 
-    <!-- Animated Background -->
+    <!-- Background -->
 
     <div class="bg-circle circle1"></div>
     <div class="bg-circle circle2"></div>
     <div class="bg-circle circle3"></div>
 
-    <div class="container">
+    <div class="container login-container">
 
-        <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="row justify-content-center align-items-center login-row">
 
             <div class="col-xl-10 col-lg-11">
+
+                <!-- LOGIN CARD -->
 
                 <div class="login-card">
 
                     <div class="row g-0">
 
-                        <!-- LEFT PANEL -->
+                        <!-- LEFT -->
 
                         <div class="col-lg-6 login-left">
 
@@ -59,10 +61,9 @@
 
                                 <p>
 
-                                    Smart Agriculture Analytics Platform
-                                    for Sales Monitoring, Employee
-                                    Management and AI Based
-                                    Fertilizer Demand Prediction.
+                                    Smart Agriculture Analytics Platform for
+                                    Sales Monitoring, Employee Management
+                                    and AI Based Fertilizer Demand Prediction.
 
                                 </p>
 
@@ -70,7 +71,7 @@
 
                         </div>
 
-                        <!-- RIGHT PANEL -->
+                        <!-- RIGHT -->
 
                         <div class="col-lg-6 login-right">
 
@@ -90,7 +91,6 @@
 
                                 {% with messages=get_flashed_messages(with_categories=true) %}
                                 {% if messages %}
-
                                 {% for category,message in messages %}
 
                                 <div class="alert alert-{{category}} mt-3">
@@ -100,7 +100,6 @@
                                 </div>
 
                                 {% endfor %}
-
                                 {% endif %}
                                 {% endwith %}
 
@@ -123,17 +122,11 @@
                                         </span>
 
                                         <input
-
                                             type="text"
-
                                             class="form-control"
-
                                             name="employee_id"
-
                                             placeholder="Enter your ID"
-
                                             autocomplete="off"
-
                                             required>
 
                                     </div>
@@ -153,15 +146,10 @@
                                         </span>
 
                                         <input
-
                                             type="password"
-
                                             class="form-control"
-
                                             name="password"
-
                                             placeholder="Enter Password"
-
                                             required>
 
                                     </div>
@@ -184,8 +172,7 @@
                     </div>
 
                 </div>
-
-                <!-- DEMO ACCOUNT CARD -->
+                                <!-- DEMO ACCOUNT -->
 
                 <div class="demo-wrapper">
 
@@ -197,7 +184,7 @@
 
                         </div>
 
-                        <div class="row">
+                        <div class="row g-3">
 
                             <div class="col-md-6">
 
@@ -270,13 +257,14 @@
                                 </div>
 
                             </div>
-                                                        </div>
 
                         </div>
 
                     </div>
 
                 </div>
+
+                <!-- FOOTER -->
 
                 <div class="text-center login-footer">
 

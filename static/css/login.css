@@ -152,7 +152,9 @@ transform:translateY(0);
 
 width:1080px;
 
-border-radius:32px;
+height:620px;
+
+border-radius:28px;
 
 overflow:hidden;
 
@@ -162,38 +164,37 @@ backdrop-filter:blur(25px);
 
 border:1px solid rgba(255,255,255,.15);
 
-box-shadow:
-
-0 25px 70px rgba(0,0,0,.45);
+box-shadow:0 20px 55px rgba(0,0,0,.40);
 
 position:relative;
 
 z-index:5;
 
 }
-
 /* ==========================
         LEFT PANEL
 ========================== */
 
 .login-left{
 
-padding:70px 60px;
+    padding:30px 55px 20px;
 
-color:#fff;
+    color:#fff;
 
-display:flex;
+    display:flex;
 
-align-items:center;
+    align-items:flex-start;
+
+    justify-content:center;
 
 }
-
 .login-content{
 
-width:100%;
+    width:100%;
+
+    margin-top:-15px;
 
 }
-
 .login-logo{
 
 width:95px;
@@ -226,7 +227,7 @@ margin-bottom:30px;
 
 .login-left h1{
 
-font-size:46px;
+font-size:38px;
 
 font-weight:800;
 
@@ -252,9 +253,11 @@ margin-bottom:25px;
 
 .login-left p{
 
-font-size:17px;
+font-size:15px;
 
-line-height:1.9;
+line-height:1.7;
+
+margin-top:12px;
 
 opacity:.92;
 
@@ -269,11 +272,11 @@ max-width:420px;
 
     background:#ffffff;
 
-    padding:70px 60px;
+    padding:25px 55px 20px;
 
     display:flex;
 
-    align-items:center;
+    align-items:flex-start;
 
     justify-content:center;
 
@@ -285,8 +288,9 @@ max-width:420px;
 
     max-width:420px;
 
-}
+    margin-top:5px;
 
+}
 .login-box h2{
 
     font-size:38px;
@@ -434,7 +438,7 @@ max-width:420px;
 
 .demo-wrapper{
 
-    margin-top:20px;
+    margin-top:12px;
 
     display:flex;
 
@@ -444,7 +448,7 @@ max-width:420px;
 
 .demo-card{
 
-    width:650px;
+    width:600px;
 
     background:rgba(255,255,255,.08);
 
@@ -454,7 +458,7 @@ max-width:420px;
 
     border-radius:18px;
 
-    padding:18px 22px;
+    padding:14px 18px;
 
     box-shadow:0 18px 45px rgba(0,0,0,.30);
 
@@ -484,7 +488,7 @@ max-width:420px;
 
     background:rgba(255,255,255,.08);
 
-    padding:14px;
+    padding:10px;
 
     border-radius:14px;
 
@@ -554,7 +558,7 @@ max-width:420px;
 
     text-align:center;
 
-    margin-top:18px;
+    margin-top:8px;
 
     color:#E5E7EB;
 
@@ -596,7 +600,7 @@ max-width:420px;
 
     .login-box h2{
 
-        font-size:30px;
+        font-size:30px;''
 
     }
 
