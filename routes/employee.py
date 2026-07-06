@@ -201,6 +201,62 @@ def profile():
 
     )
 
+# =====================================================
+# EDIT PROFILE
+# =====================================================
+
+@employee.route("/employee/edit-profile", methods=["GET", "POST"])
+def edit_profile():
+
+    if not employee_required():
+
+        return redirect(url_for("auth.login"))
+
+    employee_id = session["employee_id"]
+
+    if request.method == "POST":
+
+        Employee.update_profile(
+
+            employee_id,
+
+            request.form["phone"],
+
+            request.form["email"],
+
+            request.form["address"],
+
+            request.form["state"],
+
+            request.form["district"]
+
+        )
+
+        flash(
+
+            "Profile Updated Successfully.",
+
+            "success"
+
+        )
+
+        return redirect(
+
+            url_for("employee.profile")
+
+        )
+
+    profile = Employee.get_profile(employee_id)
+
+    return render_template(
+
+        "employee/edit_profile.html",
+
+        profile=profile,
+
+        states=get_states()
+
+    )
 
 # =====================================================
 # DISTRICT AJAX

@@ -14,7 +14,7 @@ class Employee:
 
         data = {}
 
-        # Total Sales
+        # ================= TOTAL SALES =================
 
         data["total_sales"] = conn.execute("""
 
@@ -26,7 +26,7 @@ class Employee:
 
         """, (employee_id,)).fetchone()[0]
 
-        # Total Quantity
+        # ================= TOTAL QUANTITY =================
 
         data["total_quantity"] = conn.execute("""
 
@@ -38,7 +38,7 @@ class Employee:
 
         """, (employee_id,)).fetchone()[0]
 
-        # Total Revenue
+        # ================= TOTAL REVENUE =================
 
         data["total_revenue"] = conn.execute("""
 
@@ -50,7 +50,7 @@ class Employee:
 
         """, (employee_id,)).fetchone()[0]
 
-        # This Month
+        # ================= THIS MONTH =================
 
         data["this_month_sales"] = conn.execute("""
 
@@ -64,7 +64,7 @@ class Employee:
 
         """, (employee_id,)).fetchone()[0]
 
-        # Last Month
+        # ================= LAST MONTH =================
 
         data["last_month_sales"] = conn.execute("""
 
@@ -88,7 +88,13 @@ class Employee:
 
         else:
 
-            growth = round(((current-last)/last)*100,2)
+            growth = round(
+
+                ((current-last)/last)*100,
+
+                2
+
+            )
 
         data["growth"] = growth
 
@@ -107,6 +113,8 @@ class Employee:
         else:
 
             data["performance"] = "Needs Improvement"
+
+        # ================= BEST FERTILIZER =================
 
         best = conn.execute("""
 
@@ -130,7 +138,7 @@ class Employee:
 
             LIMIT 1
 
-        """,(employee_id,)).fetchone()
+        """, (employee_id,)).fetchone()
 
         data["best_fertilizer"] = (
 
@@ -139,6 +147,8 @@ class Employee:
             if best else "--"
 
         )
+
+        # ================= TARGET =================
 
         data["target"] = 500
 
@@ -149,20 +159,18 @@ class Employee:
             2
 
         ) if data["total_quantity"] else 0
-        # ==========================================
-        # MONTHLY SALES CHART
-        # ==========================================
-        
+        # ================= MONTHLY SALES CHART =================
+
         chart = conn.execute("""
-                             
+
             SELECT
-                             
-                strftime('%m', sale_date) AS month,
+
+                strftime('%m',sale_date) AS month,
 
                 SUM(quantity) AS qty
 
             FROM sales
-           
+
             WHERE employee_id=?
 
             GROUP BY month
@@ -170,37 +178,44 @@ class Employee:
             ORDER BY month
 
         """, (employee_id,)).fetchall()
-        
+
         month_names = [
-            
+
             "Jan","Feb","Mar","Apr",
             "May","Jun","Jul","Aug",
             "Sep","Oct","Nov","Dec"
+
         ]
-        
+
         labels = []
-        
+
         values = []
-        
+
         for row in chart:
+
             labels.append(
+
                 month_names[int(row["month"])-1]
+
             )
-            
+
             values.append(
+
                 row["qty"]
+
             )
-            
+
         data["chart_labels"] = labels
-        
+
         data["chart_values"] = values
-        
+
         conn.close()
-        
+
         return data
 
+
     # =====================================================
-    # PROFILE
+    # GET PROFILE
     # =====================================================
 
     @staticmethod
@@ -216,12 +231,75 @@ class Employee:
 
             WHERE employee_id=?
 
-        """,(employee_id,)).fetchone()
+        """, (employee_id,)).fetchone()
 
         conn.close()
 
         return profile
-    
+
+
+    # =====================================================
+    # UPDATE PROFILE
+    # =====================================================
+
+    @staticmethod
+    def update_profile(
+
+        employee_id,
+
+        phone,
+
+        email,
+
+        address,
+
+        state,
+
+        district
+
+    ):
+
+        conn = get_connection()
+
+        conn.execute("""
+
+            UPDATE employees
+
+            SET
+
+                phone=?,
+
+                email=?,
+
+                address=?,
+
+                state=?,
+
+                district=?
+
+            WHERE employee_id=?
+
+        """,(
+
+            phone,
+
+            email,
+
+            address,
+
+            state,
+
+            district,
+
+            employee_id
+
+        ))
+
+        conn.commit()
+
+        conn.close()
+
+
     # =====================================================
     # SAVE SALE
     # =====================================================
@@ -251,7 +329,7 @@ class Employee:
 
             WHERE id=?
 
-        """, (fertilizer_id,)).fetchone()[0]
+        """,(fertilizer_id,)).fetchone()[0]
 
         total = int(quantity) * float(price)
 
@@ -283,7 +361,7 @@ class Employee:
 
             )
 
-        """, (
+        """,(
 
             employee_id,
 
@@ -302,8 +380,7 @@ class Employee:
         conn.commit()
 
         conn.close()
-
-    # =====================================================
+            # =====================================================
     # SALES HISTORY
     # =====================================================
 
@@ -333,18 +410,15 @@ class Employee:
             FROM sales
 
             JOIN states
-
             ON sales.state_id = states.id
 
             JOIN districts
-
             ON sales.district_id = districts.id
 
             JOIN fertilizers
-
             ON sales.fertilizer_id = fertilizers.id
 
-            WHERE sales.employee_id = ?
+            WHERE sales.employee_id=?
 
             ORDER BY sales.id DESC
 
@@ -353,7 +427,8 @@ class Employee:
         conn.close()
 
         return history
-    
+
+
     # =====================================================
     # DELETE SALE
     # =====================================================
@@ -375,3 +450,26 @@ class Employee:
 
         conn.close()
 
+
+    # =====================================================
+    # EMPLOYEE DETAILS
+    # =====================================================
+
+    @staticmethod
+    def get_employee(employee_id):
+
+        conn = get_connection()
+
+        employee = conn.execute("""
+
+            SELECT *
+
+            FROM employees
+
+            WHERE employee_id=?
+
+        """, (employee_id,)).fetchone()
+
+        conn.close()
+
+        return employee

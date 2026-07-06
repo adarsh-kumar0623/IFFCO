@@ -32,13 +32,14 @@ employees = [
 "01-04-2012",
 "Regional Sales Manager",
 "Sales",
+"Active",
 "",
 "admin123",
 "manager"
 ),
 
 (
-"EMP1001",
+"EMP001",
 "Avinash Bhardwaj",
 "avinash@iffco.com",
 "9876543201",
@@ -51,13 +52,14 @@ employees = [
 "15-07-2022",
 "Senior Sales Executive",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
 ),
 
 (
-"EMP1002",
+"EMP002",
 "Aman Rajput",
 "aman@iffco.com",
 "9876543202",
@@ -70,13 +72,14 @@ employees = [
 "10-02-2023",
 "Area Sales Officer",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
 ),
 
 (
-"EMP1003",
+"EMP003",
 "Adarsh Bhardwaj",
 "adarsh@iffco.com",
 "9876543203",
@@ -89,13 +92,14 @@ employees = [
 "01-06-2025",
 "Sales Executive",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
 ),
 
 (
-"EMP1004",
+"EMP004",
 "Nanak Pandey",
 "nanak@iffco.com",
 "9876543204",
@@ -108,13 +112,14 @@ employees = [
 "22-09-2021",
 "Field Sales Officer",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
 ),
 
 (
-"EMP1005",
+"EMP005",
 "Amul Singh",
 "amul@iffco.com",
 "9876543205",
@@ -127,13 +132,14 @@ employees = [
 "14-01-2020",
 "Territory Sales Officer",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
 ),
 
 (
-"EMP1006",
+"EMP006",
 "Rahul Verma",
 "rahul@iffco.com",
 "9876543206",
@@ -146,6 +152,7 @@ employees = [
 "10-11-2019",
 "Agriculture Development Officer",
 "Sales",
+"Active",
 "",
 "emp123",
 "employee"
@@ -158,45 +165,28 @@ cursor.executemany("""
 INSERT INTO employees(
 
 employee_id,
-
 name,
-
 email,
-
 phone,
-
 dob,
-
 gender,
-
 address,
-
 state,
-
 district,
-
 branch,
-
 joining_date,
-
 designation,
-
 department,
-
+status,
 photo,
-
 password,
-
 role
-
 )
-
+                                      
 VALUES(
-
-?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-
+?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
 )
-
+                                      
 """, employees)
 
 # ================= STATES =================

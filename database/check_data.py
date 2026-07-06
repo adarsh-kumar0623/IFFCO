@@ -1,17 +1,15 @@
 import sqlite3
+import os
 
-conn = sqlite3.connect("database/iffco.db")
-conn.row_factory = sqlite3.Row
+DB_PATH = os.path.join("database", "iffco.db")
+
+conn = sqlite3.connect(DB_PATH)
 
 cursor = conn.cursor()
 
-print("===== STATES =====")
+cursor.execute("PRAGMA table_info(employees)")
 
-for row in cursor.execute("""
-SELECT id, state_name
-FROM states
-ORDER BY state_name
-"""):
-    print(dict(row))
+for row in cursor.fetchall():
+    print(row)
 
 conn.close()

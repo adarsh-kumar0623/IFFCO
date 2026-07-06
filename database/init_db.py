@@ -8,6 +8,14 @@ os.makedirs("database", exist_ok=True)
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
+# ================= RESET TABLES =================
+
+cursor.execute("DROP TABLE IF EXISTS sales")
+cursor.execute("DROP TABLE IF EXISTS districts")
+cursor.execute("DROP TABLE IF EXISTS fertilizers")
+cursor.execute("DROP TABLE IF EXISTS employees")
+cursor.execute("DROP TABLE IF EXISTS states")
+
 # ================= EMPLOYEES =================#
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS employees(
@@ -39,6 +47,8 @@ CREATE TABLE IF NOT EXISTS employees(
     designation TEXT,
 
     department TEXT,
+               
+    status TEXT DEFAULT 'Active',
 
     photo TEXT,
 
