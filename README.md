@@ -125,50 +125,6 @@ IFFCO/
 
 ---
 
-# 💻 Screenshots
-
-### Login Page
-
-(Add Screenshot)
-
----
-
-### Employee Dashboard
-
-(Add Screenshot)
-
----
-
-### Manager Dashboard
-
-(Add Screenshot)
-
----
-
-### Sales Entry
-
-(Add Screenshot)
-
----
-
-### Sales History
-
-(Add Screenshot)
-
----
-
-### Employee Profile
-
-(Add Screenshot)
-
----
-
-### AI Forecast Dashboard
-
-(Add Screenshot)
-
----
-
 # ⚙️ Installation
 
 Clone the repository
